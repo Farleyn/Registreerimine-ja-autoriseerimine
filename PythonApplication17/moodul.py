@@ -1,3 +1,12 @@
+import random
+import string
+
+
+def genereeri_parool(pikkus=12):
+    margid = ".,:;!_*-+()/#¤%&"
+    kõik = margid + string.digits + string.ascii_letters
+    return ''.join(random.choice(kõik) for _ in range(pikkus))
+
 def registreeri(users, passwords):
     while True:
         nimi = input("\nSisesta uus kasutajanimi: ")
@@ -5,9 +14,20 @@ def registreeri(users, passwords):
             print("Nimi juba võetud!")
             continue
 
-        parool = input("Sisesta parool: ")
-        if len(parool) < 4:
-            print("\nNõrk parool!")
+        print("\n1 - Sisestan parooli ise")
+        print("2 - Genereeri parool automaatselt")
+        valik = input("Valik: ")
+
+        if valik == "1":
+            parool = input("Sisesta parool: ")
+            if len(parool) < 4:
+                print("\nNõrk parool!")
+                continue
+        elif valik == "2":
+            parool = genereeri_parool()
+            print(f"\nGenereeritud parool: {parool}")
+        else:
+            print("\nVale valik!")
             continue
 
         users.append(nimi)
@@ -48,8 +68,21 @@ def muuda(users, passwords, current_user):
             users[i] = uus_nimi
             print("\nNimi muudetud!\n")
             return uus_nimi
+
     elif valik == "2":
-        uus_parool = input("\nUus parool: ")
+        print("\n1 - Sisestan parooli ise")
+        print("2 - Genereeri parool automaatselt")
+        v = input("Valik: ")
+
+        if v == "1":
+            uus_parool = input("Sisesta uus parool: ")
+        elif v == "2":
+            uus_parool = genereeri_parool()
+            print(f"\nUus parool: {uus_parool}")
+        else:
+            print("\nVale valik!")
+            return current_user
+
         passwords[i] = uus_parool
         print("\nParool muudetud!\n")
 
@@ -61,7 +94,20 @@ def unustatud_parool(users, passwords):
     if nimi not in users:
         print("\nSellist kasutajat pole!\n")
         return
+
     i = users.index(nimi)
-    uus = input("Sisesta uus parool: ")
+    print("\n1 - Sisestan uue parooli ise")
+    print("2 - Genereeri parool automaatselt")
+    valik = input("Valik: ")
+
+    if valik == "1":
+        uus = input("Sisesta uus parool: ")
+    elif valik == "2":
+        uus = genereeri_parool()
+        print(f"\nUus parool: {uus}")
+    else:
+        print("\nVale valik!")
+        return
+
     passwords[i] = uus
     print("\nParool taastatud!\n")
